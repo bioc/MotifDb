@@ -14,7 +14,8 @@ stopifnot(basename(starting.directory) == "import")
 
 #repoRoot <- "~/s/data/public/TFBS"
 #repoRoot <- "/shared/silo_researcher/Morgan_M/BioC/MotifDb"
-repoRoot <- "/fh/fast/morgan_m/BioC/MotifDb-raw-data"
+# repoRoot <- "/fh/fast/morgan_m/BioC/MotifDb-raw-data"
+repoRoot = "/Users/paul/tmp/MotifDb-raw-data"
 
 for(directory in directories){
     print(noquote(sprintf("--- importing %s", directory)))
@@ -24,5 +25,5 @@ for(directory in directories){
     source("import.R")
     run(repoRoot)
     }
-    
+
 setwd(starting.directory)
