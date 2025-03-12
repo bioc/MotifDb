@@ -196,17 +196,16 @@ test.proteinIds = function()
   #checkEquals(NA.string.count, 0)
 
   empty.count = length(which(mcols(mdb)$proteinId==""))
-  if(empty.count > 0)
-    browser('test.proteinIds')
-
-  checkEquals(empty.count, 0)
+     # jaspar2024 has about 150.  check that they are found only there.
+  x = mcols(mdb)
+  offenders <- unique(subset(x, proteinId=="")$dataSource)
+  checkEquals(offenders, "jaspar2024")
 
      # FlyFactorSurvey, as digested by me, had a blanket assigment of UNIPROT to all proteinIds
      # Herve' pointed out that this applied also to entries with no proteinId.
      # make sure this is fixed
 
   ### FIX THIS TOO! Currently have 913 entries with a proteinIdType and no proteinId
-  x = mcols(mdb)
   # checkEquals(nrow(subset(x, !is.na(proteinIdType) & is.na(proteinId))), 0)
 
 
@@ -864,7 +863,7 @@ test.geneToMotif <- function()
 
       # MotifDb mode uses the MotifDb metadata, pulled from many sources
    tbl.mdb <- geneToMotif(mdb, genes, source="mOtifdb")     # intentional mis-capitalization
-   checkEquals(dim(tbl.mdb), c(16, 6))
+   checkEquals(dim(tbl.mdb), c(20, 6))
    checkEquals(subset(tbl.mdb, dataSource=="jaspar2016" & geneSymbol== "FOS")$motif, "MA0476.1")
       # no recognizable(i.e., jaspar standard) motif name returned by MotifDb metadata
       # MotifDb for ATF5
@@ -913,7 +912,7 @@ test.geneToMotif.ignore.jasparSuffixes <- function()
 
       # MotifDb mode uses the MotifDb metadata, pulled from many sources
    tbl.mdb <- geneToMotif(mdb, genes, source="mOtifdb")     # intentional mis-capitalization
-   checkEquals(dim(tbl.mdb), c(16, 6))
+   checkEquals(dim(tbl.mdb), c(20, 6))
    checkEquals(subset(tbl.mdb, dataSource=="jaspar2016" & geneSymbol== "FOS")$motif, "MA0476.1")
       # no recognizable(i.e., jaspar standard) motif name returned by MotifDb metadata
       # MotifDb for ATF5
@@ -1195,7 +1194,7 @@ test.hocomoco11.with.reliabilityScores <- function()
      # subsequent checks below look at metadata rownames and matrix names
      #-------------------------------------------------------------------------
 
-   checkEquals(length(query(MotifDb, "hocomoco")), 1834)
+   checkEquals(length(query(MotifDb, "hocomoco")), 3192)
    checkEquals(length(query(MotifDb, "hocomocov10")), 1066)
    checkEquals(length(query(MotifDb, "hocomocov11")), 768)
    checkEquals(length(query(MotifDb, "hocomocov11-core")), 400)
@@ -1212,6 +1211,8 @@ test.hocomoco11.with.reliabilityScores <- function()
 
    checkEquals(length(query(MotifDb, "hocomocov11-core-D")), 0)
    checkEquals(length(query(MotifDb, "hocomocov11-secondary-D")), 290)
+
+   checkEquals(length(query(MotifDb, "hocomocov13")), 1358)
 
      #-------------------------------------------------------------------------
      # check matrix names

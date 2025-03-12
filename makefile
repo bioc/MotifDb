@@ -1,3 +1,12 @@
+default:
+	@echo all [install vig build check]
+	@echo build
+	@echo install
+	@echo checkn
+	@echo biocCheck
+	@echo test
+	@echo site
+
 quick: install
 
 all:  install vig build check
